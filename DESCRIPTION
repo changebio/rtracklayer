@@ -1,0 +1,28 @@
+Package: rtracklayer
+Title: R interface to genome browsers and their annotation tracks
+Version: 1.26.0
+Author: Michael Lawrence, Vince Carey, Robert Gentleman
+Depends: R (>= 2.10), methods, GenomicRanges (>= 1.17.39)
+Imports: XML (>= 1.98-0), BiocGenerics (>= 0.11.3),
+         S4Vectors (>= 0.2.3), IRanges (>= 1.99.28), XVector (>= 0.5.8),
+         GenomeInfoDb (>= 1.1.19),
+         Biostrings (>= 2.33.14), zlibbioc, RCurl (>= 1.4-2),
+         Rsamtools (>= 1.17.8), GenomicAlignments (>= 1.1.16), tools
+Suggests: BSgenome (>= 1.33.4), humanStemCell, microRNA (>= 1.1.1), genefilter,
+          limma, org.Hs.eg.db, hgu133plus2.db,
+          BSgenome.Hsapiens.UCSC.hg19, TxDb.Hsapiens.UCSC.hg19.knownGene
+LinkingTo: S4Vectors, IRanges, XVector
+Description: Extensible framework for interacting with multiple genome 
+  browsers (currently UCSC built-in) and manipulating 
+  annotation tracks in various formats (currently GFF, BED, bedGraph, BED15,
+  WIG, BigWig and 2bit built-in). The user may export/import tracks to/from the
+  supported browsers, as well as query and modify the browser state, such as the
+  current viewport.
+Maintainer: Michael Lawrence <michafla@gene.com>
+License: Artistic-2.0
+ExtraLicenses: The files in the 'src/ucsc' directory are licensed for all
+  use by Jim Kent, in a manner compatible with the Artistic 2.0 license.
+Collate: io.R web.R ranges.R trackDb.R browser.R ucsc.R gff.R bed.R wig.R
+         utils.R bigWig.R chain.R quickload.R twobit.R fasta.R tabix.R bam.R
+         trackTable.R index.R compression.R test_rtracklayer_package.R
+biocViews: Annotation,Visualization,DataImport
