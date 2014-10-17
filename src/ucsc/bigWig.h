@@ -34,7 +34,8 @@ void bigWigFileCreate(
 	int itemsPerSlot,	/* Number of items in lowest level of tree.  512 is good. */
 	boolean clipDontDie,	/* If TRUE then clip items off end of chrom rather than dying. */
 	boolean compress,	/* If TRUE then compress data. */
-	char *outName);
+	char *outName,
+        int initialReduction);
 /* Convert ascii format wig file (in fixedStep, variableStep or bedGraph format) 
  * to binary big wig format. */
 

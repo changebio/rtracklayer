@@ -651,6 +651,7 @@ for (section = sectionList; section != NULL; section = section->next)
 		int size = item->end - item->start;
 		if (sectionRes > size)
 		    sectionRes = size;
+                
 		}
 	    break;
 	    }
@@ -799,7 +800,8 @@ return outList;
 }
 
 void bwgCreate(struct bwgSection *sectionList, struct hash *chromSizeHash, 
-	int blockSize, int itemsPerSlot, boolean doCompress, char *fileName)
+               int blockSize, int itemsPerSlot, boolean doCompress,
+               char *fileName, int initialReduction)
 /* Create a bigWig file out of a sorted sectionList. */
 {
 bits64 sectionCount = slCount(sectionList);
@@ -833,7 +835,6 @@ bwgMakeChromInfo(sectionList, chromSizeHash, &chromCount, &chromInfoArray, &maxC
  * not bump up reduction by a factor of 2 until it is, or until further summarying
  * yeilds no size reduction. */
 int  minRes = bwgAverageResolution(sectionList);
-int initialReduction = minRes*10;
 bits64 fullSize = bwgTotalSectionSize(sectionList);
 bits64 maxReducedSize = fullSize/2;
 struct bbiSummary *firstSummaryList = NULL, *summaryList = NULL;
@@ -1094,7 +1095,8 @@ void bigWigFileCreate(
 	int itemsPerSlot,	/* Number of items in lowest level of tree.  512 is good. */
 	boolean clipDontDie,	/* If TRUE then clip items off end of chrom rather than dying. */
 	boolean compress,	/* If TRUE then compress data. */
-	char *outName)
+	char *outName,
+        int initialReduction)
 /* Convert ascii format wig file (in fixedStep, variableStep or bedGraph format) 
  * to binary big wig format. */
 {
@@ -1109,7 +1111,8 @@ struct lm *lm = lmInit(0);
 struct bwgSection *sectionList = bwgParseWig(inName, clipDontDie, chromSizeHash, itemsPerSlot, lm);
 if (sectionList == NULL)
     errAbort("%s is empty of data", inName);
-bwgCreate(sectionList, chromSizeHash, blockSize, itemsPerSlot, compress, outName);
+ bwgCreate(sectionList, chromSizeHash, blockSize, itemsPerSlot, compress,
+           outName, initialReduction);
 lmCleanup(&lm);
 }
 

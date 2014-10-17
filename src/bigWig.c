@@ -97,6 +97,7 @@ createBWGSection_Atomic(const char *seq, int start, double *score,
 
 static int itemsPerSlot = 512;
 static int blockSize = 1024;
+static int initialReduction = 1024;
 
 static void BWGSectionList_addRle(struct bwgSection **sections, const char *seq,
                                   SEXP r_ranges, double *score,
@@ -190,7 +191,7 @@ SEXP BWGSectionList_write(SEXP r_sections, SEXP r_seqlengths, SEXP r_compress,
   }
   pushRHandlers();
   bwgCreate(sections, lenHash, blockSize, itemsPerSlot, asLogical(r_compress),
-            (char *)CHAR(asChar(r_file)));
+            (char *)CHAR(asChar(r_file)), initialReduction);
   freeHash(&lenHash);
   popRHandlers();
   return r_file;
@@ -386,7 +387,7 @@ SEXP BWGFile_fromWIG(SEXP r_infile, SEXP r_seqlengths, SEXP r_outfile) {
     bwgParseWig((char *)CHAR(asChar(r_infile)), FALSE, lenHash, itemsPerSlot,
                 lm);
   bwgCreate(sections, lenHash, blockSize, itemsPerSlot, TRUE,
-            (char *)CHAR(asChar(r_outfile)));
+            (char *)CHAR(asChar(r_outfile)), initialReduction);
   lmCleanup(&lm);
   freeHash(&lenHash);
   popRHandlers();

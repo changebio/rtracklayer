@@ -3,7 +3,7 @@
 
 void bwgCreate(struct bwgSection *sectionList, struct hash *chromSizeHash, 
                int blockSize, int itemsPerSlot, boolean doCompress,
-               char *fileName);
+               char *fileName, int initialReduction);
 
 struct bbiFile *bigWigFileOpen(char *fileName);
 
