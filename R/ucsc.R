@@ -9,16 +9,20 @@ setClass("UCSCSession",
 # gets an 'hgsid' to initialize the session
 setMethod("initialize", "UCSCSession",
           function(.Object, url = "http://genome.ucsc.edu/cgi-bin/",
-                   user = NULL, session = NULL, ...)
+                   user = NULL, session = NULL, force = FALSE, ...)
           {
             .Object@url <- url
             .Object@views <- new.env()
-            handle <- getCurlHandle(followLocation=TRUE, ...)
-            gw <- getURL(ucscURL(.Object, "gateway"), cookiefile = tempfile(),
-                         header = TRUE, curl = handle)
+            gwURL <- ucscURL(.Object, "gateway")
+            if (force) {
+              gwURL <- paste0(gwURL, '?redirect="manual"')
+            }
+            gw <- httpGet(gwURL, cookiefile = tempfile(), header = TRUE,
+                          .parse=FALSE)
             if (grepl("redirectTd", gw)) {
-                url <- sub(".*?a href=\"h([^[:space:]]+cgi-bin/).*", "h\\1", gw)
-                return(callGeneric())
+              url <- sub(".*?a href=\"h([^[:space:]]+cgi-bin/).*", "h\\1", gw)
+              return(initialize(.Object, url, user=user, session=session,
+                                force=TRUE, ...))
             }
             cookie <- grep("Set-[Cc]ookie: hguid[^=]*=", gw)
             if (!length(cookie))
