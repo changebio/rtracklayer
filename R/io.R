@@ -46,6 +46,10 @@ setMethod("show", "RTLFile", function(object) {
 })
 
 FileForFormat <- function(path, format = file_ext(path)) {
+  stopifnot(isSingleString(path), isSingleString(format))
+  if (format == "") {
+    stop("Cannot detect format (no extension found in file name)")
+  }
   fileClassName <- paste0(format, "File")
   signatureClasses <- function(fun, pos) {
     matrix(unlist(findMethods(fun)@signatures), 3)[pos,]
@@ -184,8 +188,6 @@ setMethod("bestFileFormat", c("RleList", "ANY"), function(x, dest) {
 setMethod("bestFileFormat", c("RangesList", "ANY"), function(x, dest) {
   "bed" # just ranges...
 })
-
-file_ext <- function(con) gsub(".*\\.([^.]*)$", "\\1", con)
 
 ## Uses XML::parseURI, except first checks for Windows drive letter.
 ## There are no known URI schemes that are only a single character.
